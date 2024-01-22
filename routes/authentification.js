@@ -44,8 +44,8 @@ router.post('/login', async (req, res) => {
       process.env.JWT_SEC,
       { expiresIn: '3d' },
     );
-    const { username, email } = user._doc;
-    const others = { username, email };
+    const { username, email, isAdmin } = user._doc;
+    const others = { username, email, isAdmin };
     res.status(200).json({ ...others, accessToken });
   } catch (err) {
     res.status(500).json(err);
