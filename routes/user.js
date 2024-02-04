@@ -4,7 +4,7 @@ import {
   verifyToken,
   verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
-} from '/verifyToken.js';
+} from './verifyToken.js';
 const router = Router();
 
 // GET ALL USERS
