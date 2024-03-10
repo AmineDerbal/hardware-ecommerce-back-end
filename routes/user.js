@@ -1,7 +1,6 @@
 import User from '../models/User.js';
 import { Router } from 'express';
 import {
-  verifyToken,
   verifyTokenAndAuthorization,
   verifyTokenAndAdmin,
 } from './verifyToken.js';
@@ -10,7 +9,8 @@ const router = Router();
 // GET ALL USERS
 router.get('/', verifyTokenAndAdmin, async (req, res) => {
   try {
-    const users = await User.find({}, { password: 0 });
+    const users = await User.find({}, { password: 0, accessToken: 0,createdAt:0,updatedAt:0 });
+    console.log(users)
     res.status(200).json(users);
   } catch (err) {
     res.status(500).json(err);
