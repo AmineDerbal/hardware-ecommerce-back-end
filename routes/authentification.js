@@ -2,11 +2,16 @@ import { Router } from 'express';
 import User from '../models/User.js';
 import CryptoJS from 'crypto-js';
 import jwt from 'jsonwebtoken';
+import multer from 'multer';
 
 const router = Router();
+const upload = multer();
 
 //Register
-router.post('/register', async (req, res) => {
+router.post('/register',upload.single('image'), async (req, res) => {
+  const user = await User.findOne({ email: req.body.email }) || await User.findOne({ username: req.body.username });
+  if (user) return res.status(401).json('User already exists!');
+
   const newUser = new User({
     username: req.body.username,
     email: req.body.email,
@@ -14,6 +19,7 @@ router.post('/register', async (req, res) => {
       req.body.password,
       process.env.PASS_SEC,
     ).toString(),
+    img:req.file ? req.file.buffer : null,
   });
 
   try {
@@ -44,6 +50,11 @@ router.post('/login', async (req, res) => {
       process.env.JWT_SEC,
       { expiresIn: '3d' },
     );
+    if (user.accessToken !== accessToken) {
+      user.accessToken = accessToken;
+      await user.save();
+    }
+  
     const { username, email, isAdmin } = user._doc;
     const others = { username, email, isAdmin };
     res.status(200).json({ ...others, accessToken });
