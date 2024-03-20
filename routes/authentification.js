@@ -33,7 +33,7 @@ router.post('/register',upload.single('image'), async (req, res) => {
 //Login
 router.post('/login', async (req, res) => {
   try {
-    const user = await User.findOne({ username: req.body.username });
+    const user = await User.findOne({ email: req.body.email });
     !user && res.status(401).json('Wrong credentials!');
     const hashedPassword = CryptoJS.AES.decrypt(
       user.password,
