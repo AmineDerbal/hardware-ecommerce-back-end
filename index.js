@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 import authRoute from './routes/authentification.js';
 import userRoute from './routes/user.js';
 
+
+
 const app = express();
 dotenv.config();
 app.use(cors());
@@ -18,5 +20,6 @@ mongoose
   .catch((err) => console.log(err));
 
 app.listen(process.env.PORT || 5000, () => {
+
   console.log('Backend server is running!');
 });
